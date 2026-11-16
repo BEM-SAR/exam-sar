@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAR - Sound And Read | Level: Beginner / A0 Final Exam</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #dbeafe;
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #16a34a;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-weight: 600;
+    }
+
+    .timer {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 1.1rem;
+    }
+
+    .lock-badge {
+      font-size: 0.85rem;
+      background: #b91c1c;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 24px auto;
+      padding: 0 16px 60px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .section-banner {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 10px 16px;
+      border-left: 5px solid var(--primary);
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 18px;
+      border-radius: 4px;
+    }
+
+    .question-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+
+    .instruction {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .q1-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .q1-item {
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+
+    .letter-pair {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px;
+      color: var(--primary);
+    }
+
+    .options-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .option-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .option-btn input {
+      display: none;
+    }
+
+    .option-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .seq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .seq-box {
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-family: monospace;
+      font-weight: 600;
+    }
+
+    .phonics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+      gap: 10px;
+    }
+
+    .phonics-tile {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      background: white;
+    }
+
+    .phonics-char {
+      padding: 10px 4px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tick-cross-group {
+      display: flex;
+    }
+
+    .tc-btn {
+      flex: 1;
+      border: none;
+      background: #fff;
+      padding: 8px 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #94a3b8;
+      transition: 0.15s;
+    }
+
+    .tc-btn:first-child {
+      border-right: 1px solid var(--border);
+    }
+
+    .tc-btn.active-tick {
+      background: var(--success);
+      color: white;
+    }
+
+    .tc-btn.active-cross {
+      background: var(--danger);
+      color: white;
+    }
+
+    .dictation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .dict-item {
+      border: 1px solid var(--border);
+      padding: 10px;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+
+    .dict-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .audio-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .dict-item input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .reading-passage {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .recorder-box {
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .recorder-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-record {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-record.recording {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .fluency-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      background: #e2e8f0;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .fluency-controls input {
+      width: 80px;
+      padding: 4px 6px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .mcq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    .mcq-card {
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 8px;
+    }
+
+    .mcq-card p {
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+
+    .mcq-option {
+      display: block;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .mcq-option:hover {
+      background: #f8fafc;
+    }
+
+    .trans-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    table.trans-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.trans-table th, table.trans-table td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      font-size: 0.92rem;
+    }
+
+    table.trans-table th {
+      background: #f1f5f9;
+    }
+
+    table.trans-table td.arabic-col {
+      direction: rtl;
+      text-align: right;
+      font-weight: 600;
+      width: 52%;
+      background: #f8fafc;
+    }
+
+    table.trans-table input {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 0.92rem;
+    }
+
+    .submit-area {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+    }
+
+    .btn-submit:hover {
+      background: #172554;
+    }
+
+    #resultModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 540px;
+      width: 100%;
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .final-score-box {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--primary-light);
+      border-radius: 10px;
+    }
+
+    .breakdown-list {
+      text-align: left;
+      margin: 16px 0;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    .breakdown-list div {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+
+    .device-notice {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>SAR — Sound And Read | Level: Beginner / A0 — FINAL EXAM</h1>
+  </div>
+  <div class="status-bar">
+    <span id="lockBadge" class="lock-badge">EXAM IN PROGRESS (RESTART LOCKED)</span>
+    <div class="timer" id="timerDisplay">120:00</div>
+  </div>
+</header>
+
+<div class="container" id="examForm">
+
+  <div class="device-notice">
+    <strong>Exam Security Active:</strong> Autocorrect, predictive text, and spellcheck are disabled. Switching tabs or leaving the browser window is logged. Restarting is disabled once you start answering.
+  </div>
+
+  <!-- Candidate Info -->
+  <div class="card">
+    <div class="section-banner">ENGLISH COURSE PROGRAMME — CANDIDATE DETAILS</div>
+    <div class="meta-grid">
+      <div class="form-group">
+        <label>Participant's Name</label>
+        <input type="text" id="candidateName" placeholder="Enter full name" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label>School</label>
+        <input type="text" id="schoolName" placeholder="Enter school name" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label>City / Address</label>
+        <input type="text" id="cityAddress" placeholder="Enter city / address" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="examDate" />
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="card">
+    <div class="section-banner">PART 1: MASTERING THE ALPHABET</div>
+
+    <div class="question-title">QUESTION 1 — How many letters are between:</div>
+    <div class="instruction">Select the correct number for each pair. (Example: a — d has 2 letters: b, c)</div>
+    <div class="q1-grid" id="q1Container"></div>
+
+    <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);" />
+
+    <div class="question-title">QUESTION 2 — In which of the sequences below do the letters appear in the correct order?</div>
+    <div class="instruction">Tick all sequences that are in strict alphabetical order.</div>
+    <div class="seq-grid" id="q2Container"></div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="card">
+    <div class="section-banner">PART 2: PHONICS</div>
+
+    <div class="question-title">QUESTION 3: Say the sounds of the letters.</div>
+    <div class="instruction">Examiner points at a letter and lets the student say its sound. Mark with a Tick (✓) if correct or Cross (✗) if incorrect.</div>
+    <div class="phonics-grid" id="q3Container"></div>
+
+    <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);" />
+
+    <div class="question-title">QUESTION 4: Read the syllables (VC, CV).</div>
+    <div class="instruction">Examiner points at a syllable and lets the student say its sound. Mark with a Tick (✓) if correct or Cross (✗) if incorrect.</div>
+    <div class="phonics-grid" id="q4Container"></div>
+
+    <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);" />
+
+    <div class="question-title">QUESTION 5: Listen then write / evaluate the syllables.</div>
+    
+    <p style="font-weight:600; margin-bottom:6px;">5.1 — Listen to the recording / pronunciation. Mark (✓) if the word is said correctly or (✗) if incorrect:</p>
+    <div class="phonics-grid" id="q5_1Container" style="margin-bottom: 20px;"></div>
+
+    <p style="font-weight:600; margin-bottom:6px;">5.2 — Listen then write: Click "Play" to hear the word and write the missing syllable/letters:</p>
+    <div class="dictation-grid" id="q5_2Container" style="margin-bottom: 20px;"></div>
+
+    <p style="font-weight:600; margin-bottom:6px;">5.3 — Complete the missing letters:</p>
+    <div class="dictation-grid" id="q5_3Container"></div>
+  </div>
+
+  <!-- PART 3 -->
+  <div class="card">
+    <div class="section-banner">PART 3: VOCABULARY & READING COMPREHENSION</div>
+
+    <div class="question-title">QUESTION 6: Reading Fluency — Read and Record</div>
+    <div class="instruction">Candidate reads the passage aloud using the voice recorder below. Speech recognition and timing automatically evaluate fluency behind the scenes.</div>
+
+    <div class="reading-passage">
+      <strong>Maya's Daily Routine</strong><br />
+      Maya lives in a small flat with her family. She often wakes up at 6. She drinks a glass of water and makes hot coffee. Then, she gets ready for work.<br />
+      Maya works as a cashier at a local shop. She starts work at 8 a.m. At work, she scans items, and handles cash and bank cards. She likes her job. Her co-workers are very friendly.<br />
+      At 12 p.m., Maya eats lunch with her friend. She often brings a sandwich and an apple from home.<br />
+      Maya finishes work at 4 p.m. After work, she walks to the market to get some bread and milk. At home, she cooks dinner for her family. They eat at 7 p.m. and talk about their day.<br />
+      Before bed, Maya reads a book. She goes to sleep at ten o'clock. She is happy with her daily routine.
+    </div>
+
+    <!-- Live Voice Recorder Component -->
+    <div class="recorder-box">
+      <strong>🎙️ Candidate Voice Recorder (Auto-Analysis Enabled)</strong>
+      <div class="recorder-controls">
+        <button type="button" class="btn-record" id="recordBtn">🔴 Start Recording</button>
+        <span id="recordStatus" style="font-weight:600; color:var(--muted);">Recorder ready</span>
+      </div>
+      <audio id="audioPlayback" controls style="width:100%; display:none;"></audio>
+      <div style="font-size:0.85rem; color:var(--muted);">
+        Speech recognition automatically logs recognized words and reading duration silently for final scoring.
+      </div>
+      <!-- Optional Examiner Override -->
+      <div class="fluency-controls">
+        <span><em>Optional Examiner Override:</em></span>
+        <div>
+          <label>Seconds:</label>
+          <input type="number" id="readSeconds" min="1" placeholder="Auto" />
+        </div>
+        <div>
+          <label>Words (0-145):</label>
+          <input type="number" id="correctWords" min="0" max="145" placeholder="Auto" />
+        </div>
+      </div>
+    </div>
+
+    <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);" />
+
+    <div class="question-title">QUESTION 7: Choose the correct answer.</div>
+    <div class="mcq-grid" id="q7Container"></div>
+  </div>
+
+  <!-- PART 4 -->
+  <div class="card">
+    <div class="section-banner">PART 4: TRANSLATION AND DICTATION</div>
+    <div class="question-title">QUESTION 8: Translate into English. Write in the spaces provided.</div>
+    <div class="instruction">Write the English word or phrase matching each Arabic prompt. (Autocorrect & dictionary disabled)</div>
+
+    <div class="trans-columns" id="q8Container"></div>
+  </div>
+
+  <div class="submit-area">
+    <button type="button" class="btn-submit" id="submitExamBtn">Submit & Finish Exam</button>
+  </div>
+</div>
+
+<!-- Final Score Modal (Hidden until submission) -->
+<div id="resultModal">
+  <div class="modal-content">
+    <h2>Exam Completed</h2>
+    <p id="resultCandidateInfo" style="color: var(--muted); margin-bottom: 8px;"></p>
+    <div class="final-score-box" id="finalScoreDisplay">0 / 171</div>
+    <div class="breakdown-list" id="scoreBreakdown"></div>
+    <p id="tabSwitchWarning" style="font-size: 0.85rem; color: #b91c1c; margin-top: 8px;"></p>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 12px;">
+      This exam session is locked and finalized.
+    </p>
+  </div>
+</div>
+
+<script>
+  // ==========================================
+  // EXAM DATA (No pre-filled answers in UI)
+  // ==========================================
+  const examData = {
+    q1: [
+      { id: 'q1_1', left: 'f', right: 'j', options: [3, 5, 4], answer: 3 },
+      { id: 'q1_2', left: 'g', right: 'n', options: [7, 6, 2], answer: 6 },
+      { id: 'q1_3', left: 'o', right: 'q', options: [3, 5, 1], answer: 1 },
+      { id: 'q1_4', left: 'u', right: 'y', options: [3, 5, 1], answer: 3 }
+    ],
+    q2: [
+      { id: 'q2_1', num: 5, text: 'defghijk', valid: true },
+      { id: 'q2_2', num: 6, text: 'hijklmno', valid: true },
+      { id: 'q2_3', num: 7, text: 'opqrstuv', valid: true },
+      { id: 'q2_4', num: 8, text: 'lmnopqrs', valid: true }
+    ],
+    q3: ['b','z','j','p','g','r','t','c','o','y','m','f','v','w','a','u','h','x','qu','k','s','d','l','i','n','e'],
+    q4: ['at','ji','ga','ho','ig','ko','up','di','us','ti','if','zo','am','eg','gi','ce','ec','ye','do','na','an','qui','ha','zi','ob','of'],
+    q5_1: ['sab', 'bac', 'cel', 'man', 'fan', 'hat', 'egg', 'bag', 'cup', 'bed'],
+    q5_2: [
+      { num: 1, promptAudio: 'cat', answer: 'cat' },
+      { num: 2, promptAudio: 'pen', answer: 'pen' },
+      { num: 3, promptAudio: 'dog', answer: 'dog' },
+      { num: 4, promptAudio: 'sun', answer: 'sun' },
+      { num: 5, promptAudio: 'pig', answer: 'pig' },
+      { num: 6, promptAudio: 'box', answer: 'box' },
+      { num: 7, promptAudio: 'red', answer: 'red' },
+      { num: 8, promptAudio: 'sit', answer: 'sit' },
+      { num: 9, promptAudio: 'top', answer: 'top' },
+      { num: 10, promptAudio: 'mud', answer: 'mud' }
+    ],
+    q5_3: [
+      { num: 1, pattern: 'li_', audio: 'lip', answer: 'p' },
+      { num: 2, pattern: '_o', audio: 'go', answer: 'g' },
+      { num: 3, pattern: '_n', audio: 'on', answer: 'o' },
+      { num: 4, pattern: 'be_', audio: 'bed', answer: 'd' },
+      { num: 5, pattern: 'm_d', audio: 'mad', answer: 'a' },
+      { num: 6, pattern: 'di_', audio: 'dig', answer: 'g' }
+    ],
+    q7: [
+      { q: "1. Where does Maya live?", options: ["a) In a big house", "b) In a small flat", "c) In a local shop", "d) In a hotel"], answer: 1 },
+      { q: "2. What does Maya drink right after waking up?", options: ["a) A cup of tea", "b) Hot milk", "c) A glass of water", "d) Apple juice"], answer: 2 },
+      { q: "3. What is Maya's job?", options: ["a) Cook", "b) Teacher", "c) Cashier", "d) Doctor"], answer: 2 },
+      { q: "4. What time does Maya start work?", options: ["a) 6:00 a.m.", "b) 7:00 a.m.", "c) 8:00 a.m.", "d) 12:00 p.m."], answer: 2 },
+      { q: "5. Why does Maya like her job?", options: ["a) Her co-workers are very friendly.", "b) She works near her flat.", "c) The shop is very small.", "d) She eats lunch at work."], answer: 0 },
+      { q: "6. What does Maya usually bring from home for lunch?", options: ["a) Bread and milk", "b) A sandwich and an apple", "c) Hot coffee and water", "d) Cooked dinner"], answer: 1 },
+      { q: "7. What does Maya buy at the market after work?", options: ["a) Coffee and tea", "b) Sandwiches and apples", "c) Bread and milk", "d) Books and cards"], answer: 2 },
+      { q: "8. What time does Maya's family eat dinner?", options: ["a) 4 p.m.", "b) 7 p.m.", "c) 8 p.m.", "d) 10 p.m."], answer: 1 }
+    ],
+    q8: [
+      [
+        { ar: "أنا (ضمير فاعل)", en: ["i"] }, { ar: "هو (ضمير فاعل)", en: ["he"] }, { ar: "نحن (ضمير فاعل)", en: ["we"] },
+        { ar: "ضمير فاعل لغير إنسان", en: ["it"] }, { ar: "هم (ضمير فاعل)", en: ["they"] }, { ar: "يوجد (للمفرد)", en: ["there is"] },
+        { ar: "أنا (ضمير مفعول به)", en: ["me"] }, { ar: "أيضا", en: ["too", "also"] }, { ar: "يخصني (صفة ملكية)", en: ["my"] },
+        { ar: "ماء البحر", en: ["sea water", "seawater"] }, { ar: "صغير", en: ["small", "little"] }, { ar: "ستة", en: ["six"] },
+        { ar: "كبير", en: ["big", "large"] }, { ar: "أليف", en: ["pet", "tame"] }, { ar: "سمين", en: ["fat"] },
+        { ar: "أحمر", en: ["red"] }, { ar: "عشرة", en: ["ten"] }, { ar: "اثنان", en: ["two"] },
+        { ar: "مسرور", en: ["happy", "glad"] }, { ar: "هذا يكون / هذه تكون", en: ["this is"] }, { ar: "لكن", en: ["but"] }
+      ],
+      [
+        { ar: "يستطيع", en: ["can"] }, { ar: "يقرأ", en: ["read", "reads"] }, { ar: "أكون / يكون / نكون", en: ["am", "is", "are", "be"] },
+        { ar: "لدي / لديه", en: ["have", "has"] }, { ar: "يجري", en: ["run", "runs"] }, { ar: "يمشي", en: ["walk", "walks"] },
+        { ar: "يقفز", en: ["jump", "jumps"] }, { ar: "يرى", en: ["see", "sees"] }, { ar: "يطير", en: ["fly", "flies"] },
+        { ar: "يعيش", en: ["live", "lives"] }, { ar: "يصنع", en: ["make", "makes"] }, { ar: "لا", en: ["no", "not"] },
+        { ar: "يحب", en: ["like", "likes", "love", "loves"] }, { ar: "يسأل", en: ["ask", "asks"] }, { ar: "يشرب", en: ["drink", "drinks"] },
+        { ar: "يقول", en: ["say", "says"] }, { ar: "كثير من", en: ["many", "a lot of", "lots of"] }, { ar: "نعم", en: ["yes"] },
+        { ar: "لا", en: ["no"] }, { ar: "في", en: ["in"] }, { ar: "ال", en: ["the"] }
+      ],
+      [
+        { ar: "نملة", en: ["ant", "an ant"] }, { ar: "رأس", en: ["head", "a head"] }, { ar: "أرجل", en: ["legs"] },
+        { ar: "أسئلة", en: ["questions"] }, { ar: "قط", en: ["cat", "a cat"] }, { ar: "فأر", en: ["mouse", "rat", "a mouse", "a rat"] },
+        { ar: "غفوة", en: ["nap", "a nap"] }, { ar: "سجادة", en: ["mat", "rug", "carpet", "a mat", "a rug"] }, { ar: "كلب", en: ["dog", "a dog"] },
+        { ar: "سرير", en: ["bed", "a bed"] }, { ar: "حديقة حيوان", en: ["zoo", "a zoo"] }, { ar: "بيت", en: ["house", "home", "a house"] },
+        { ar: "حقيبة", en: ["bag", "a bag"] }, { ar: "كتب", en: ["books"] }, { ar: "أقلام", en: ["pens"] },
+        { ar: "نحلة", en: ["bee", "a bee"] }, { ar: "أجنحة", en: ["wings"] }, { ar: "خلية", en: ["hive", "a hive"] },
+        { ar: "عسل", en: ["honey"] }, { ar: "أطفال", en: ["kids", "children"] }, { ar: "سمكة", en: ["fish", "a fish"] }
+      ]
+    ]
+  };
+
+  // ==========================================
+  // ANTI-RESTART, TAB LOCK & STATE PERSISTENCE
+  // ==========================================
+  const STORAGE_KEY = 'SAR_A0_FINAL_EXAM_UNIFIED_V1';
+  let examState = {
+    started: false,
+    submitted: false,
+    remainingSeconds: 120 * 60,
+    answers: {},
+    autoDetectedWords: 0,
+    autoDetectedSeconds: 0,
+    tabSwitches: 0
+  };
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { examState = JSON.parse(saved); } catch (e) {}
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(examState));
+  }
+
+  function lockExamOnFirstInteraction() {
+    if (!examState.started) {
+      examState.started = true;
+      document.getElementById('lockBadge').style.display = 'inline-block';
+      saveState();
+    }
+  }
+
+  // Detect if mobile user switches to translator/dictionary apps
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && examState.started && !examState.submitted) {
+      examState.tabSwitches++;
+      saveState();
+    }
+  });
+
+  // Prevent browser reload/exit once started
+  window.addEventListener('beforeunload', function (e) {
+    if (examState.started && !examState.submitted) {
+      e.preventDefault();
+      e.returnValue = 'Exam is in progress. You cannot restart once you have started answering.';
+    }
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (examState.started && !examState.submitted) {
+      if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r')) {
+        e.preventDefault();
+        alert('Restarting is disabled once you have begun answering the exam.');
+      }
+    }
+  });
+
+  // ==========================================
+  // VOICE RECORDING & SPEECH RECOGNITION
+  // ==========================================
+  const referencePassageWords = new Set(
+    "maya lives in a small flat with her family she often wakes up at 6 she drinks a glass of water and makes hot coffee then she gets ready for work maya works as a cashier at a local shop she starts work at 8 am at work she scans items and handles cash and bank cards she likes her job her co workers are very friendly at 12 pm maya eats lunch with her friend she often brings a sandwich and an apple from home maya finishes work at 4 pm after work she walks to the market to get some bread and milk at home she cooks dinner for her family they eat at 7 pm and talk about their day before bed maya reads a book she goes to sleep at ten o clock she is happy with her daily routine".split(" ")
+  );
+
+  let mediaRecorder;
+  let audioChunks = [];
+  let isRecording = false;
+  let speechRecognizer = null;
+  let recordingStartTime = 0;
+
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    speechRecognizer = new SpeechRecognition();
+    speechRecognizer.continuous = true;
+    speechRecognizer.interimResults = true;
+    speechRecognizer.lang = 'en-US';
+
+    speechRecognizer.onresult = (event) => {
+      let transcript = '';
+      for (let i = 0; i < event.results.length; ++i) {
+        transcript += ' ' + event.results[i][0].transcript;
+      }
+      const spokenWords = transcript.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean);
+      // Count matched words up to 145
+      let matched = 0;
+      spokenWords.forEach(w => {
+        if (referencePassageWords.has(w) || w.length >= 2) matched++;
+      });
+      examState.autoDetectedWords = Math.min(145, matched);
+      saveState();
+    };
+  }
+
+  const recordBtn = document.getElementById('recordBtn');
+  const recordStatus = document.getElementById('recordStatus');
+  const audioPlayback = document.getElementById('audioPlayback');
+
+  recordBtn.addEventListener('click', async () => {
+    lockExamOnFirstInteraction();
+    if (!isRecording) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = event => {
+          if (event.data.size > 0) audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audioPlayback.src = audioUrl;
+          audioPlayback.style.display = 'block';
+
+          const durationSec = Math.max(5, Math.round((Date.now() - recordingStartTime) / 1000));
+          examState.autoDetectedSeconds = durationSec;
+          saveState();
+        };
+
+        mediaRecorder.start();
+        if (speechRecognizer) speechRecognizer.start();
+        recordingStartTime = Date.now();
+
+        isRecording = true;
+        recordBtn.textContent = '⏹️ Stop Recording';
+        recordBtn.classList.add('recording');
+        recordStatus.textContent = 'Recording voice...';
+      } catch (err) {
+        alert('Microphone access denied or unavailable on this browser.');
+      }
+    } else {
+      mediaRecorder.stop();
+      if (speechRecognizer) speechRecognizer.stop();
+      isRecording = false;
+      recordBtn.textContent = '🔴 Start Recording';
+      recordBtn.classList.remove('recording');
+      recordStatus.textContent = 'Recording saved & evaluated automatically.';
+    }
+  });
+
+  // ==========================================
+  // RENDER EXAM QUESTIONS
+  // ==========================================
+  function renderExam() {
+    const q1Div = document.getElementById('q1Container');
+    examData.q1.forEach((item, idx) => {
+      const box = document.createElement('div');
+      box.className = 'q1-item';
+      box.innerHTML = `
+        <div class="letter-pair"><span>${idx + 1}. ${item.left}</span><span>${item.right}</span></div>
+        <div class="options-row">
+          ${item.options.map(opt => `
+            <label class="option-btn ${examState.answers[item.id] === opt ? 'selected' : ''}" data-qid="${item.id}" data-val="${opt}">
+              <input type="radio" name="${item.id}" value="${opt}" ${examState.answers[item.id] === opt ? 'checked' : ''}/>
+              ${opt}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      q1Div.appendChild(box);
+    });
+
+    const q2Div = document.getElementById('q2Container');
+    examData.q2.forEach(item => {
+      const checked = !!examState.answers[item.id];
+      const lbl = document.createElement('label');
+      lbl.className = 'seq-box';
+      lbl.innerHTML = `
+        <input type="checkbox" data-qid="${item.id}" ${checked ? 'checked' : ''} style="width:18px;height:18px;"/>
+        <span>${item.num}. ${item.text}</span>
+      `;
+      q2Div.appendChild(lbl);
+    });
+
+    renderTCGrid('q3Container', examData.q3, 'q3');
+    renderTCGrid('q4Container', examData.q4, 'q4');
+    renderTCGrid('q5_1Container', examData.q5_1, 'q5_1');
+
+    const q5_2Div = document.getElementById('q5_2Container');
+    examData.q5_2.forEach(item => {
+      const key = `q5_2_${item.num}`;
+      const val = examState.answers[key] || '';
+      const div = document.createElement('div');
+      div.className = 'dict-item';
+      div.innerHTML = `
+        <div class="dict-header"><span>#${item.num}</span><button type="button" class="audio-btn" onclick="speak('${item.promptAudio}')">🔊 Play</button></div>
+        <input type="text" data-qid="${key}" value="${val}" placeholder="Word..." autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" />
+      `;
+      q5_2Div.appendChild(div);
+    });
+
+    const q5_3Div = document.getElementById('q5_3Container');
+    examData.q5_3.forEach(item => {
+      const key = `q5_3_${item.num}`;
+      const val = examState.answers[key] || '';
+      const div = document.createElement('div');
+      div.className = 'dict-item';
+      div.innerHTML = `
+        <div class="dict-header"><span>${item.num}. <strong>${item.pattern}</strong></span><button type="button" class="audio-btn" onclick="speak('${item.audio}')">🔊 Play</button></div>
+        <input type="text" maxlength="1" data-qid="${key}" value="${val}" placeholder="Letter" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" />
+      `;
+      q5_3Div.appendChild(div);
+    });
+
+    const q7Div = document.getElementById('q7Container');
+    examData.q7.forEach((item, idx) => {
+      const key = `q7_${idx}`;
+      const savedIdx = examState.answers[key];
+      const card = document.createElement('div');
+      card.className = 'mcq-card';
+      card.innerHTML = `
+        <p>${item.q}</p>
+        ${item.options.map((opt, oIdx) => `
+          <label class="mcq-option">
+            <input type="radio" name="${key}" data-qid="${key}" value="${oIdx}" ${savedIdx === oIdx ? 'checked' : ''} />
+            ${opt}
+          </label>
+        `).join('')}
+      `;
+      q7Div.appendChild(card);
+    });
+
+    const q8Div = document.getElementById('q8Container');
+    examData.q8.forEach((col, cIdx) => {
+      const table = document.createElement('table');
+      table.className = 'trans-table';
+      table.innerHTML = `
+        <thead><tr><th>English</th><th>Arabic</th></tr></thead>
+        <tbody>
+          ${col.map((row, rIdx) => {
+            const key = `q8_${cIdx}_${rIdx}`;
+            const val = examState.answers[key] || '';
+            return `<tr><td><input type="text" data-qid="${key}" value="${val}" placeholder="English..." autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" /></td><td class="arabic-col">${row.ar}</td></tr>`;
+          }).join('')}
+        </tbody>
+      `;
+      q8Div.appendChild(table);
+    });
+
+    ['candidateName', 'schoolName', 'cityAddress', 'examDate', 'readSeconds', 'correctWords'].forEach(id => {
+      if (examState.answers[id]) document.getElementById(id).value = examState.answers[id];
+    });
+
+    if (examState.started) document.getElementById('lockBadge').style.display = 'inline-block';
+  }
+
+  function renderTCGrid(containerId, items, prefix) {
+    const container = document.getElementById(containerId);
+    items.forEach((label, idx) => {
+      const key = `${prefix}_${idx}`;
+      const stateVal = examState.answers[key];
+      const tile = document.createElement('div');
+      tile.className = 'phonics-tile';
+      tile.innerHTML = `
+        <div class="phonics-char">${label}</div>
+        <div class="tick-cross-group">
+          <button type="button" class="tc-btn ${stateVal === 'tick' ? 'active-tick' : ''}" data-qid="${key}" data-tc="tick">✓</button>
+          <button type="button" class="tc-btn ${stateVal === 'cross' ? 'active-cross' : ''}" data-qid="${key}" data-tc="cross">✗</button>
+        </div>
+      `;
+      container.appendChild(tile);
+    });
+  }
+
+  function speak(word) {
+    lockExamOnFirstInteraction();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = 'en-US';
+      utter.rate = 0.8;
+      window.speechSynthesis.speak(utter);
+    }
+  }
+
+  // ==========================================
+  // EVENT LISTENERS & AUTO-SAVE
+  // ==========================================
+  document.addEventListener('click', function (e) {
+    if (examState.submitted) return;
+    const optBtn = e.target.closest('.option-btn');
+    if (optBtn) {
+      lockExamOnFirstInteraction();
+      const qid = optBtn.dataset.qid;
+      const val = Number(optBtn.dataset.val);
+      examState.answers[qid] = val;
+      document.querySelectorAll(`.option-btn[data-qid="${qid}"]`).forEach(b => b.classList.remove('selected'));
+      optBtn.classList.add('selected');
+      saveState();
+    }
+
+    const tcBtn = e.target.closest('.tc-btn');
+    if (tcBtn) {
+      lockExamOnFirstInteraction();
+      const qid = tcBtn.dataset.qid;
+      const tc = tcBtn.dataset.tc;
+      examState.answers[qid] = tc;
+      const siblings = tcBtn.parentElement.querySelectorAll('.tc-btn');
+      siblings[0].classList.toggle('active-tick', tc === 'tick');
+      siblings[1].classList.toggle('active-cross', tc === 'cross');
+      saveState();
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    if (examState.submitted) return;
+    const target = e.target;
+    if (target.type === 'checkbox' && target.dataset.qid) {
+      lockExamOnFirstInteraction();
+      examState.answers[target.dataset.qid] = target.checked;
+      saveState();
+    }
+    if (target.type === 'radio' && target.dataset.qid) {
+      lockExamOnFirstInteraction();
+      examState.answers[target.dataset.qid] = Number(target.value);
+      saveState();
+    }
+  });
+
+  document.addEventListener('input', function (e) {
+    if (examState.submitted) return;
+    const target = e.target;
+    const key = target.dataset.qid || target.id;
+    if (key) {
+      if (target.dataset.qid || target.id === 'readSeconds' || target.id === 'correctWords') {
+        lockExamOnFirstInteraction();
+      }
+      examState.answers[key] = target.value;
+      saveState();
+    }
+  });
+
+  // Block paste in translation/dictation fields to discourage external translators
+  document.addEventListener('paste', function (e) {
+    if (e.target.tagName === 'INPUT' && e.target.dataset.qid) {
+      e.preventDefault();
+    }
+  });
+
+  // Main Countdown Timer
+  setInterval(() => {
+    if (examState.submitted) return;
+    if (examState.started && examState.remainingSeconds > 0) {
+      examState.remainingSeconds--;
+      saveState();
+    }
+    const mins = Math.floor(examState.remainingSeconds / 60);
+    const secs = examState.remainingSeconds % 60;
+    document.getElementById('timerDisplay').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    if (examState.remainingSeconds === 0 && !examState.submitted) finalizeAndShowScore();
+  }, 1000);
+
+  // ==========================================
+  // FINAL SCORING ENGINE (SHOWN ONLY AT END)
+  // ==========================================
+  function finalizeAndShowScore() {
+    examState.submitted = true;
+    saveState();
+
+    document.querySelectorAll('input, button').forEach(el => el.disabled = true);
+
+    let part1Score = 0;
+    examData.q1.forEach(item => { if (examState.answers[item.id] === item.answer) part1Score += 1; });
+    examData.q2.forEach(item => { if (Boolean(examState.answers[item.id]) === item.valid) part1Score += 1; });
+
+    let q3Score = 0;
+    examData.q3.forEach((_, idx) => { if (examState.answers[`q3_${idx}`] === 'tick') q3Score += 1; });
+
+    let q4Score = 0;
+    examData.q4.forEach((_, idx) => { if (examState.answers[`q4_${idx}`] === 'tick') q4Score += 1; });
+
+    let q5Score = 0;
+    examData.q5_1.forEach((_, idx) => { if (examState.answers[`q5_1_${idx}`] === 'tick') q5Score += 1; });
+    examData.q5_2.forEach(item => {
+      if ((examState.answers[`q5_2_${item.num}`] || '').trim().toLowerCase() === item.answer) q5Score += 1;
+    });
+    examData.q5_3.forEach(item => {
+      if ((examState.answers[`q5_3_${item.num}`] || '').trim().toLowerCase() === item.answer) q5Score += 1;
+    });
+
+    // Q6: Use examiner manual override if entered, otherwise use automatic voice recording analysis
+    let q6Score = 0;
+    const manualSec = Number(examState.answers['readSeconds'] || 0);
+    const manualWords = Number(examState.answers['correctWords'] || 0);
+    const finalWords = manualWords > 0 ? Math.min(145, manualWords) : examState.autoDetectedWords;
+    const finalSec = manualSec > 0 ? manualSec : examState.autoDetectedSeconds;
+
+    if (finalWords > 0) {
+      const pronScore = finalWords * 0.25;
+      const speedScore = finalSec > 0 ? Math.min(8.75, (75 / finalSec) * 8.75) : 0;
+      q6Score = Math.round((pronScore + speedScore) * 100) / 100;
+    }
+
+    let q7Score = 0;
+    examData.q7.forEach((item, idx) => { if (examState.answers[`q7_${idx}`] === item.answer) q7Score += 1; });
+
+    let rawTransCorrect = 0, totalTransItems = 0;
+    examData.q8.forEach((col, cIdx) => {
+      col.forEach((row, rIdx) => {
+        totalTransItems++;
+        if (row.en.includes((examState.answers[`q8_${cIdx}_${rIdx}`] || '').trim().toLowerCase())) rawTransCorrect++;
+      });
+    });
+    const q8Score = Math.round(((rawTransCorrect / totalTransItems) * 33) * 100) / 100;
+
+    const totalScore = Math.round((part1Score + q3Score + q4Score + q5Score + q6Score + q7Score + q8Score) * 100) / 100;
+
+    document.getElementById('resultCandidateInfo').textContent = `Participant: ${examState.answers['candidateName'] || 'Candidate'}`;
+    document.getElementById('finalScoreDisplay').textContent = `${totalScore} / 171`;
+
+    document.getElementById('scoreBreakdown').innerHTML = `
+      <div><span>Part 1: Alphabet</span><strong>${part1Score} / 8</strong></div>
+      <div><span>Part 2 (Q3): Letter Sounds</span><strong>${q3Score} / 26</strong></div>
+      <div><span>Part 2 (Q4): Syllables</span><strong>${q4Score} / 26</strong></div>
+      <div><span>Part 2 (Q5): Listening & Writing</span><strong>${q5Score} / 26</strong></div>
+      <div><span>Part 3 (Q6): Voice Fluency Evaluation</span><strong>${q6Score} / 45</strong></div>
+      <div><span>Part 3 (Q7): Comprehension</span><strong>${q7Score} / 8</strong></div>
+      <div><span>Part 4 (Q8): Translation (${rawTransCorrect}/${totalTransItems})</span><strong>${q8Score} / 33</strong></div>
+    `;
+
+    if (examState.tabSwitches > 0) {
+      document.getElementById('tabSwitchWarning').textContent = `Security Log: Candidate left/switched browser tab ${examState.tabSwitches} time(s) during the exam.`;
+    }
+
+    document.getElementById('resultModal').style.display = 'flex';
+  }
+
+  document.getElementById('submitExamBtn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to submit the exam? Scores will be finalized and you cannot edit answers.')) {
+      finalizeAndShowScore();
+    }
+  });
+
+  loadState();
+  renderExam();
+  if (examState.submitted) finalizeAndShowScore();
+</script>
+
+</body>
+</html>
